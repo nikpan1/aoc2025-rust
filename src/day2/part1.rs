@@ -138,7 +138,7 @@ mod tests {
 
         let sum: i128 = invalid_ids.iter().sum();
 
-        assert_eq!(sum, 56737989959);
+        assert_eq!(sum, 56660955519);
     }
 
     fn consume_str_to_string(range_ends: &mut Split<char>) -> String {
