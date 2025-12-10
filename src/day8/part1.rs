@@ -9,6 +9,12 @@ struct Coordinate {
     z: u128,
 }
 
+struct Connection {
+    left: usize,
+    right: usize,
+    distance: f64,
+}
+
 impl Coordinate {
     fn euclidean_distance(&self, other: &Coordinate) -> f64 {
         let dx = self.x.abs_diff(other.x) as f64;
@@ -18,14 +24,23 @@ impl Coordinate {
     }
 }
 
-struct Connection {
-    left: usize,
-    right: usize,
-    distance: f64,
+fn find(parent: &mut Vec<usize>, i: usize) -> usize {
+    if parent[i] == i {
+        i
+    } else {
+        let root = find(parent, parent[i]);
+        parent[i] = root;
+        root
+    }
+}
+
+fn parse(values: &Vec<&str>, index: usize) -> u128 {
+    values.get(index).unwrap().parse::<u128>().unwrap()
 }
 
 #[cfg(test)]
 mod tests {
+    use std::collections::HashMap;
     use super::*;
 
     #[test]
@@ -54,15 +69,6 @@ mod tests {
         distance_matrix.truncate(1000);
 
         let mut parent: Vec<usize> = (0..size).collect();
-        fn find(parent: &mut Vec<usize>, i: usize) -> usize {
-            if parent[i] == i {
-                i
-            } else {
-                let root = find(parent, parent[i]);
-                parent[i] = root;
-                root
-            }
-        }
 
         for connection in distance_matrix {
             let root_a = find(&mut parent, connection.left);
@@ -73,10 +79,7 @@ mod tests {
             }
         }
 
-        // We use a HashMap to count how many nodes point to each root
-        use std::collections::HashMap;
         let mut counts: HashMap<usize, u64> = HashMap::new();
-
         for i in 0..size {
             let root = find(&mut parent, i);
             *counts.entry(root).or_insert(0) += 1;
@@ -86,10 +89,6 @@ mod tests {
         sizes.sort_by(|a, b| b.cmp(a));
         let result: u64 = sizes.iter().take(3).product();
 
-        assert_eq!(result, 40);
-    }
-
-    fn parse(values: &Vec<&str>, index: usize) -> u128 {
-        values.get(index).unwrap().parse::<u128>().unwrap()
+        assert_eq!(result, 129564);
     }
 }
