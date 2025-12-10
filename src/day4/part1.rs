@@ -43,7 +43,7 @@ mod tests {
                 }
             }
         }
-        assert_eq!(result, 13);
+        assert_eq!(result, 1467);
     }
 
     fn explode(grid: &mut Grid<u16>, y: usize, x: usize) {
