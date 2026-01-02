@@ -27,13 +27,14 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let sections = read_file("src/day5/input.txt");
-        let mut sections = sections.split("\r\n\r\n");
+        let sections = read_file("src/day5/input.txt").replace("\r\n", "\n");
+        let mut sections = sections.split("\n\n");
         let ranges_block = sections.next().expect("Missing range section");
         let values_block = sections.next().expect("Missing values section");
 
         let mut ranges: Vec<Range> = ranges_block
             .lines()
+            .filter(|line| !line.is_empty())
             .map(|line| {
                 let mut parts = line.split('-');
                 Range {

@@ -27,8 +27,8 @@ mod tests {
 
     #[test]
     fn test_part2() {
-        let ranges_block = read_file("src/day5/input.txt");
-        let mut ranges_block = ranges_block.split("\r\n\r\n");
+        let ranges_block = read_file("src/day5/input.txt").replace("\r\n", "\n");
+        let mut ranges_block = ranges_block.split("\n\n");
         let ranges_block = ranges_block.next().expect("Missing range section");
 
         let mut ranges: Vec<Range> = ranges_block
